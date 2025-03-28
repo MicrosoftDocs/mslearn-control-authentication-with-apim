@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 apiappname=WeatherDataAPI$(openssl rand -hex 5)
 
@@ -11,8 +11,7 @@ GIT_EMAIL=a@b.c
 git config --global user.name "$GIT_USERNAME"
 git config --global user.email "$GIT_EMAIL"
 
-
-RESOURCE_GROUP=$(az group list --query "[0].name" -o tsv)
+az group create --location eastus --name learn-apim-rg
 
 # Create App Service plan
 PLAN_NAME=myPlan
@@ -21,11 +20,11 @@ PLAN_NAME=myPlan
 printf "\nCreating App Service plan in FREE tier ... (2/7)\n\n"
 
 
-az appservice plan create --name $apiappname --resource-group $RESOURCE_GROUP --location centralus --sku FREE --verbose
+az appservice plan create --name $apiappname --resource-group learn-apim-rg --location centralus --sku FREE --verbose
 
 printf "\nCreating API App ... (3/7)\n\n"
 
-az webapp create --name $apiappname --resource-group $RESOURCE_GROUP --plan $apiappname --deployment-local-git --verbose
+az webapp create --name $apiappname --resource-group learn-apim-rg --plan $apiappname --deployment-local-git --verbose
 
 
 printf "\nSetting the account-level deployment credentials ...(4/7)\n\n"
